@@ -1,7 +1,5 @@
 # DevHub-frontend
 
----
-
 ## 🔹 프로젝트 개요
 
 - React 18 기반 SPA (Single Page Application)
