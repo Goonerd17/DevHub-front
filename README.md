@@ -1,8 +1,3 @@
-좋아요! 😎
-올려주신 프로젝트 구조와 `package.json` 정보를 바탕으로, **DevHub Frontend** 프로젝트용 깔끔한 README를 작성해볼게요. Vite + React + MUI + React Router 기반임을 명시하고, 설치, 실행, 각 페이지 설명까지 포함했습니다.
-
----
-
 # 📝 DevHub Frontend
 
 > DevHub 프론트엔드 프로젝트입니다.
