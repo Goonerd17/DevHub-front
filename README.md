@@ -1,7 +1,4 @@
-# 📝 DevHub Frontend
-
-> DevHub 프론트엔드 프로젝트입니다.
-> Vite + React + React Router를 기반으로 빠르고 모던한 UI/UX를 제공합니다.
+# DevHub-frontend
 
 ---
 
