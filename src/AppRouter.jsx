@@ -3,6 +3,7 @@ import HomePage from "./pages/Home";
 import JsonPage from "./pages/JsonPage";
 import Base64Page from "./pages/Base64Page";
 import CryptoPage from "./pages/CryptoPage";
+import GuestBookPage from './pages/GuestBookPage';
 
 function AppRouter() {
   return (
@@ -12,6 +13,7 @@ function AppRouter() {
         <Link to="/json">📄 JSON</Link>
         <Link to="/base64">🔐 Base64</Link>
         <Link to="/crypto">🧬 Crypto</Link>
+        <Link to="/guestbook">📖 GuestBook</Link>
       </nav>
 
       <div className="container">
@@ -20,6 +22,7 @@ function AppRouter() {
           <Route path="/json" element={<JsonPage />} />
           <Route path="/base64" element={<Base64Page />} />
           <Route path="/crypto" element={<CryptoPage />} />
+          <Route path="/guestbook" element={<GuestBookPage />} />
         </Routes>
       </div>
     </Router>
