@@ -14,7 +14,7 @@ const GuestBookPage = () => {
   const fetchGuestBooks = async () => {
     setLoading(true);
     try {
-      const data = await fetch("http://localhost:8080/guestbook");
+      const data = await fetch("http://localhost:8080/v1/guestbook");
       console.log(data, "data 확인") // 필요 시 전체 URL로 변경
       if (data) {
         setGuestBooks(data.data || []); // ApiResponseVo 구조에 맞게
@@ -36,7 +36,7 @@ const GuestBookPage = () => {
     }
     setError("");
     try {
-      const res = await fetch("http://localhost:8080/guestbook/create", {
+      const res = await fetch("http://localhost:8080/v1/guestbook/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, message }),
