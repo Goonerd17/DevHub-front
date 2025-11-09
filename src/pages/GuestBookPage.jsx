@@ -1,28 +1,29 @@
-// GuestBookPage.jsx
 import React, { useEffect, useState } from "react";
+import axios from "axios"; // ← 추가
 import "../styles/common.css";
 import PageLayout from "./PageLayout";
 
 const GuestBookPage = () => {
   const [guestBooks, setGuestBooks] = useState([]);
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
+  const [username, setUsername] = useState("");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const API_BASE = "/v1"
 
   // 방명록 조회
   const fetchGuestBooks = async () => {
     setLoading(true);
     try {
-      const data = await fetch("http://localhost:8080/v1/guestbook");
-      console.log(data, "data 확인") // 필요 시 전체 URL로 변경
-      if (data) {
-        setGuestBooks(data.data || []); // ApiResponseVo 구조에 맞게
+      const res = await axios.get(`${API_BASE}/guestbook`);
+      if (res.data.success === true) {
+        setGuestBooks(res.data.data || []);
       } else {
-        setError(data.message || "Failed to fetch guest books");
+        setError(res.data.message || "Failed to fetch guest books");
       }
     } catch {
-      setError("Network error");
+      setError("Try again later");
     } finally {
       setLoading(false);
     }
@@ -30,24 +31,22 @@ const GuestBookPage = () => {
 
   // 방명록 작성
   const createGuestBook = async () => {
-    if (!name || !message) {
+    if (!username || !description) {
       setError("Name and message are required");
       return;
     }
-    setError("");
     try {
-      const res = await fetch("http://localhost:8080/v1/guestbook/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, message }),
+      const res = await axios.post(`${API_BASE}/guestbook/create`, {
+        username,
+        description,
       });
-      const data = await res.json();
-      if (res.ok) {
-        setName("");
-        setMessage("");
-        fetchGuestBooks(); // 작성 후 갱신
+
+      if (res.data.success === true) {
+        setUsername(res.data.username);
+        setDescription(res.data.description);
+        fetchGuestBooks();
       } else {
-        setError(data.message || "Failed to create guest book");
+        setError(res.message || "Failed to create guest book");
       }
     } catch {
       setError("Network error");
@@ -60,55 +59,61 @@ const GuestBookPage = () => {
 
   return (
     <PageLayout>
-      <div className="tool-container crypto-page">
+      <div className="tool-container guestbook-page">
         <h2 className="tool-title">📖 Guest Book</h2>
 
-        {error && <p style={{ color: "#ff4d4f", marginBottom: "1rem" }}>{error}</p>}
+        {error && <p className="error-text">{error}</p>}
 
-        {/* 작성 폼 */}
-        <textarea
-          placeholder="Your Name..."
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={{ marginBottom: "1rem" }}
-        />
-        <textarea
-          placeholder="Your Message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <div className="button-group">
-          <button onClick={createGuestBook}>Write</button>
-          <button onClick={() => { setName(""); setMessage(""); }}>Clear</button>
-          <button onClick={fetchGuestBooks}>Refresh</button>
+        {/* 구분선 위: 방명록 리스트 */}
+       <div className="guestbook-list-section">
+          {loading ? (
+            <p>Loading...</p>
+          ) : guestBooks.length === 0 ? (
+            <p className="empty-text">No entries yet.</p>
+          ) : (
+            guestBooks.map((entry) => (
+              <div key={entry.id} className="guestbook-entry">
+                <p><strong>Username:</strong> {entry.username}</p>
+                <p><strong>Description:</strong> {entry.description}</p>
+              </div>
+            ))
+          )}
         </div>
+        <div className="divider" />
 
-        {/* 방명록 리스트 */}
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <div style={{ width: "100%", marginTop: "1rem" }}>
-            {guestBooks.length === 0 ? (
-              <p>No entries yet.</p>
-            ) : (
-              guestBooks.map((entry, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    backgroundColor: "#2a2a3f",
-                    padding: "1rem",
-                    marginBottom: "1rem",
-                    borderRadius: "8px",
-                    color: "#fff",
-                  }}
-                >
-                  <strong>{entry.name}</strong>
-                  <p>{entry.message}</p>
-                </div>
-              ))
-            )}
+        {/* 구분선 아래: 입력란 */}
+        <div className="guestbook-form">
+          <textarea
+            placeholder="Write your message here..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="guestbook-textarea-center"
+          />
+
+          <div className="guestbook-bottom-row">
+            <input
+              type="text"
+              placeholder="Your Name..."
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="guestbook-input-left"
+            />
+            <div className="button-group-inline">
+              <button className="btn-green" onClick={createGuestBook}>
+                Write
+              </button>
+              <button
+                className="btn-yellow"
+                onClick={() => {
+                  setUsername("");
+                  setDescription("");
+                }}
+              >
+                Clear
+              </button>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </PageLayout>
   );

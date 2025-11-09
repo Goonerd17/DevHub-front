@@ -148,60 +148,176 @@ button {
   color: #f5f5f5;
 }
 
-
 .home-welcome-message {
   max-width: 600px;
   color: #f5f5f5; /* 포인트 컬러 */
 }
+/* GuestBookPage 개선 스타일 */
+.guestbook-page {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-/* JSON Page (노랑 포인트) */
+/* 리스트 영역 */
+.guestbook-list-section {
+  width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 1rem;
+  background-color: #1a1a27;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(20, 20, 30, 0.5);
+  margin-bottom: 2rem;
+}
+
+.guestbook-entry {
+  background-color: #2a2a3f;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  color: #f5f5f5;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+.guestbook-entry:hover {
+  background-color: #32324a;
+  transform: scale(1.01);
+}
+
+/* 구분선 */
+.divider {
+  width: 100%;
+  height: 2px;
+  background-color: #333;
+  margin: 1rem 0;
+  border-radius: 2px;
+}
+
+/* 입력 폼 전체 */
+.guestbook-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 중앙 메시지 입력 박스 */
+.guestbook-textarea-center {
+  width: 80%;
+  min-height: 120px;
+  background-color: #1f1f2e;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 1rem;
+  resize: none;
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 하단 사용자명 + 버튼 */
+.guestbook-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 80%;
+  gap: 1rem;
+}
+
+.guestbook-input-left {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  border: none;
+  background-color: #1f1f2e;
+  color: #fff;
+}
+
+/* 버튼 인라인 정렬 */
+.button-group-inline {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.empty-text {
+  color: #aaa;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.error-text {
+  color: #ff4d4f;
+  margin-bottom: 1rem;
+}
+
+/* JSON Page */
 .json-page button:nth-child(1) {
-  background-color: #e5b100;
+  background-color: #00b25c;
 }
 .json-page button:nth-child(1):hover {
-  background-color: #f1c232;
+  background-color: #00b25c;
 }
 
 .json-page button:nth-child(2) {
-  background-color: #555;
+  background-color: #d73a49;
 }
 .json-page button:nth-child(2):hover {
-  background-color: #666;
+  background-color: #d73a49;
 }
 
-/* Base64 Page (초록 포인트) */
+/* Base64 Page */
 .base64-page button:nth-child(1) {
   background-color: #00b25c;
 }
 .base64-page button:nth-child(1):hover {
-  background-color: #00d16f;
+  background-color: #00b25c;
 }
 
 .base64-page button:nth-child(2) {
-  background-color: #00793b;
+  background-color: #e5b100;
 }
 .base64-page button:nth-child(2):hover {
-  background-color: #00914a;
+  background-color: #e5b100;
 }
 
 .base64-page button:nth-child(3) {
-  background-color: #444;
-}
-.base64-page button:nth-child(3):hover {
-  background-color: #555;
-}
-
-/* Crypto Page (빨강 포인트) */
-.crypto-page button:nth-child(1) {
   background-color: #d73a49;
 }
+.base64-page button:nth-child(3):hover {
+  background-color: #d73a49;
+}
+
+/* Crypto Page */
+.crypto-page button:nth-child(1) {
+  background-color: #00b25c;
+}
 .crypto-page button:nth-child(1):hover {
-  background-color: #f04b5d;
+  background-color: #00b25c;
 }
 
 .crypto-page button:nth-child(2) {
-  background-color: #444;
+  background-color: #d73a49;
 }
 .crypto-page button:nth-child(2):hover {
-  background-color: #555;
+  background-color: #d73a49;
+}
+
+
+/* GuestBook Page */
+.guestbook-page button:nth-child(1) {
+  background-color: #00b25c;
+}
+.guestbook-page button:nth-child(1):hover {
+  background-color: #00b25c;
+}
+
+.guestbook-page button:nth-child(2) {
+  background-color: #d73a49;
+}
+.guestbook-page button:nth-child(2):hover {
+  background-color: #d73a49;
 }

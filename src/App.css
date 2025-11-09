@@ -1,50 +1,192 @@
-/* 전체 페이지 공통 스타일 */
+/* ===============================
+   🎨 공통 다크모던 스타일 기본값
+================================ */
+:root {
+  --bg-main: #121212;
+  --bg-card: #1e1e1e;
+  --bg-accent: #1e1e2f;
+  --text-main: #f5f5f5;
+  --border-color: #2a2a2a;
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+
+  /* 포인트 컬러 */
+  --color-blue: #00d8ff;
+  --color-yellow: #e5b100;
+  --color-yellow-hover: #f1c232;
+  --color-green: #00b25c;
+  --color-green-hover: #00d16f;
+  --color-red: #d73a49;
+  --color-red-hover: #f04b5d;
+}
+
+/* ===============================
+   🌑 기본 레이아웃 구조
+================================ */
 body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: "Segoe UI", Roboto, sans-serif;
   margin: 0;
-  font-family: 'Pretendard', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9fafb;
-  color: #333;
+  padding: 0;
+  transition: all 0.3s ease-in-out;
 }
 
-/* 상단 네비게이션 바 */
-nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ffffff;
-  padding: 1rem 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-nav a {
-  text-decoration: none;
-  color: #333;
-  margin: 0 1rem;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-nav a:hover {
-  color: #007bff;
-}
-
-/* 메인 컨테이너: 항상 중앙에 고정 */
-.main-container {
+.page-layout {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 3rem;
   height: calc(100vh - 80px);
-  width: 100%;
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.page-content {
+  width: 80%;
   max-width: 800px;
-  margin: 0 auto;
+  background-color: var(--bg-card);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
   padding: 2rem;
-  box-sizing: border-box;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===============================
+   🧰 Tool Page 공통 스타일
+================================ */
+.tool-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
+}
+
+.tool-title {
+  font-size: 1.5rem;
+  font-weight: 600;
   text-align: center;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  color: var(--text-main);
+}
+
+textarea {
+  width: 100%;
+  max-width: 600px;
+  min-height: 200px;
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #2a2a3f;
+  color: #ffffff;
+  border: 1px solid #444;
+  border-radius: 8px;
+  font-family: "Courier New", Courier, monospace;
+  resize: vertical;
+  transition: border 0.2s;
+  outline: none;
+}
+
+textarea:focus {
+  border-color: #888;
+}
+
+/* ===============================
+   🔘 버튼 스타일
+================================ */
+button {
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 500;
+  padding: 10px 22px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+/* 공통 hover 색상 (기본 파란 포인트) */
+button:hover {
+  background-color: var(--color-blue);
+  color: var(--bg-main);
+}
+
+/* ===============================
+   🧭 Header / Footer / Navigation
+================================ */
+.app-header,
+.app-footer {
+  background-color: var(--bg-accent);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.app-nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem 2rem;
+}
+
+.app-nav a {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.app-nav a:hover {
+  color: var(--color-blue);
+}
+
+.app-body {
+  min-height: calc(100vh - 120px);
+  background-color: var(--bg-accent);
+  color: var(--text-main);
+  padding: 2rem;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+}
+
+/* ===============================
+   🏠 Home Page
+================================ */
+.home-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  text-align: center;
+}
+
+.home-page .tool-title {
+  font-size: 2rem;
+  color: var(--color-blue);
+  margin-bottom: 1rem;
+}
+
+.home-page p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  max-width: 600px;
+  color: var(--text-main);
 }
