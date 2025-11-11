@@ -18,7 +18,7 @@ const Crypto = () => {
   return (
   <PageLayout>
     <div className="tool-container crypto-page">
-      <h2 className="tool-title">🧮 SHA-256 해셔</h2>
+      <h2 className="tool-title">🧮 SHA-256 Hasher</h2>
       <textarea
         placeholder="Enter text..."
         value={text}
