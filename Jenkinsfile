@@ -25,11 +25,17 @@ pipeline {
             }
         }
 
-        stage('Build Jar') {
+        stage('Install Dependencies') {
             steps {
-                echo "🏗 Building front jar..."
-                sh "chmod +x gradlew"
-                sh "./gradlew clean build"
+                echo "📦 Installing Node.js dependencies..."
+                sh 'npm install'
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                echo "🏗 Building frontend with Vite..."
+                sh 'npm run build'
             }
         }
 
@@ -62,7 +68,7 @@ pipeline {
                     sh 'git config --global user.name "Jenkins"'
                     sh 'git config --global user.email "jenkins@devhub.local"'
                     sh "git clone https://$GIT_USER:$GIT_TOKEN@github.com/Goonerd17/DevHub-infra.git"
-                    sh "cd DevHub-infra/infra/k8s/devhub-front && sed -i 's#image: goonerd/DevHub-front:.*#image: $IMAGE_NAME:$BUILD_TAG#' deployment.yml"
+                    sh "cd DevHub-infra/infra/k8s/devhub-front && sed -i.bak 's#image: goonerd/DevHub-front:.*#image: $IMAGE_NAME:$BUILD_TAG#' deployment.yml"
                     sh "cd DevHub-infra/infra/k8s/devhub-front && git add . && git commit -m '[CI] Update front image to $BUILD_TAG' || echo 'No changes to commit'"
                     sh "cd DevHub-infra/infra/k8s/devhub-front && git push origin dev"
                 }
