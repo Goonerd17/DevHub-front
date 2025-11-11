@@ -61,19 +61,26 @@ pipeline {
         stage('Update Front Infra Repo') {
           steps {
               withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                  dir('DevHub-infra/infra/k8s/devhub-frontend') {
-                    sh "sed -i 's#image: goonerd/DevHub-front:.*#image: ${IMAGE_NAME}:${BUILD_TAG}#' ./deployment.yml"
 
-                    sh "git --git-dir=./.git --work-tree=./ config user.name 'Jenkins'"
-                    sh "git --git-dir=./.git --work-tree=./ config user.email 'jenkins@devhub.local'"
+                // Git 사용자 정보 설정
+                sh 'git config --global user.name "Jenkins"'
+                sh 'git config --global user.email "jenkins@devhub.local"'
 
+                // Infra 레포 클론
+                sh "git clone https://$GIT_USER:$GIT_TOKEN@github.com/Goonerd17/DevHub-infra.git"
+
+                // 디렉토리 이동 후 이미지 태그 변경
+                dir('DevHub-infra/infra/k8s/devhub-frontend') {
+                    sh "sed -i 's#image: goonerd/DevHub-frontend:.*#image: ${IMAGE_NAME}:${BUILD_TAG}#' deployment.yml"
+
+                    // Git 커밋 및 푸시
                     sh """
-                        git --git-dir=./.git --work-tree=./ add ./deployment.yml
-                        git --git-dir=./.git --work-tree=./ commit -m '[CI] Update front image to ${BUILD_TAG}' --allow-empty
-                        git --git-dir=./.git --work-tree=./ push origin dev
+                        git add deployment.yml
+                        git commit -m '[CI] Update front image to ${BUILD_TAG}' --allow-empty
+                        git push origin dev
                     """
                 }
-              }
+            }
           }
       }
     }
