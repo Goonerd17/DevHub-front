@@ -62,23 +62,17 @@ pipeline {
           steps {
               withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
                   dir('DevHub-infra/infra/k8s/devhub-frontend') {
-                      // deployment.yml 이미지 태그 수정
-                      sh """
-                          sed -i 's,image: goonerd/DevHub-front:.*,
-                          image: ${IMAGE_NAME}:${BUILD_TAG},' ./deployment.yml
-                      """
+                    sh "sed -i 's#image: goonerd/DevHub-front:.*#image: ${IMAGE_NAME}:${BUILD_TAG}#' ./deployment.yml"
 
-                      // git config
-                      sh "git --git-dir=./.git --work-tree=./ config user.name 'Jenkins'"
-                      sh "git --git-dir=./.git --work-tree=./ config user.email 'jenkins@devhub.local'"
+                    sh "git --git-dir=./.git --work-tree=./ config user.name 'Jenkins'"
+                    sh "git --git-dir=./.git --work-tree=./ config user.email 'jenkins@devhub.local'"
 
-                      // git add / commit / push
-                      sh """
-                          git --git-dir=./.git --work-tree=./ add ./deployment.yml
-                          git --git-dir=./.git --work-tree=./ commit -m '[CI] Update front image to ${BUILD_TAG}' --allow-empty
-                          git --git-dir=./.git --work-tree=./ push origin dev
-                      """
-                  }
+                    sh """
+                        git --git-dir=./.git --work-tree=./ add ./deployment.yml
+                        git --git-dir=./.git --work-tree=./ commit -m '[CI] Update front image to ${BUILD_TAG}' --allow-empty
+                        git --git-dir=./.git --work-tree=./ push origin dev
+                    """
+                }
               }
           }
       }
