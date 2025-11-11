@@ -61,7 +61,6 @@ pipeline {
         stage('Update Front Infra Repo') {
           steps {
               withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-
                 // Git 사용자 정보 설정
                 sh 'git config --global user.name "Jenkins"'
                 sh 'git config --global user.email "jenkins@devhub.local"'
@@ -69,11 +68,16 @@ pipeline {
                 // Infra 레포 클론
                 sh "git clone https://$GIT_USER:$GIT_TOKEN@github.com/Goonerd17/DevHub-infra.git"
 
-                // 디렉토리 이동 후 이미지 태그 변경
+                // 프론트 deployment.yml 이미지 태그 업데이트
                 dir('DevHub-infra/infra/k8s/devhub-frontend') {
-                    sh "sed -i 's#image: goonerd/DevHub-frontend:.*#image: ${IMAGE_NAME}:${BUILD_TAG}#' deployment.yml"
+                    // sed 패턴: 실제 yml 파일과 대소문자/공백 맞춤
+                    sh """
+                        echo "Updating deployment.yml image tag..."
+                        sed -i "s#image: goonerd/devhub-front:.*#image: ${IMAGE_NAME}:${BUILD_TAG}#" deployment.yml
+                        cat deployment.yml | grep "image:"   # 실제로 변경됐는지 확인용
+                    """
 
-                    // Git 커밋 및 푸시
+                    // Git add, 커밋, 푸시
                     sh """
                         git add deployment.yml
                         git commit -m '[CI] Update front image to ${BUILD_TAG}' --allow-empty
