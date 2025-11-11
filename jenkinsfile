@@ -72,10 +72,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Build and Infra update complete!"
+            echo "✅ Build and Infra update complete"
         }
         failure {
-            echo "❌ Pipeline failed!"
+            echo "❌ Pipeline failed"
         }
     }
 }
