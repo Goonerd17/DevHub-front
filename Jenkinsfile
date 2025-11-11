@@ -58,26 +58,30 @@ pipeline {
             }
         }
 
-        stage('Update Infra Repo') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                    sh 'git config --global user.name "Jenkins"'
-                    sh 'git config --global user.email "jenkins@devhub.local"'
+        stage('Update Front Infra Repo') {
+          steps {
+              withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                  dir('DevHub-infra/infra/k8s/devhub-frontend') {
+                      // deployment.yml 이미지 태그 수정
+                      sh """
+                          sed -i 's,image: goonerd/DevHub-front:.*,
+                          image: ${IMAGE_NAME}:${BUILD_TAG},' ./deployment.yml
+                      """
 
-                    // Infra repo clone
-                    sh "git clone https://$GIT_USER:$GIT_TOKEN@github.com/Goonerd17/DevHub-infra.git"
+                      // git config
+                      sh "git --git-dir=./.git --work-tree=./ config user.name 'Jenkins'"
+                      sh "git --git-dir=./.git --work-tree=./ config user.email 'jenkins@devhub.local'"
 
-                    // 프론트엔드 deployment.yml 이미지 태그 업데이트
-                    sh """
-                        cd DevHub-infra/infra/k8s/devhub-frontend
-                        sed -i "s#image: goonerd/DevHub-frontend:.*#image: $IMAGE_NAME:$BUILD_TAG#" deployment.yml
-                        git add deployment.yml
-                        git commit -m '[CI] Update front image to $BUILD_TAG' --allow-empty
-                        git push origin dev
-                    """
-                }
-            }
-        }
+                      // git add / commit / push
+                      sh """
+                          git --git-dir=./.git --work-tree=./ add ./deployment.yml
+                          git --git-dir=./.git --work-tree=./ commit -m '[CI] Update front image to ${BUILD_TAG}' --allow-empty
+                          git --git-dir=./.git --work-tree=./ push origin dev
+                      """
+                  }
+              }
+          }
+      }
     }
 
     post {
