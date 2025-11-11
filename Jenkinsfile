@@ -26,12 +26,6 @@ pipeline {
         }
 
         stage('Install Dependencies & Build Frontend') {
-            agent {
-                docker {
-                    image 'node:18-bullseye'    // Node.js + npm 포함 Docker 이미지
-                    args '-u root:root'         // 권한 문제 방지
-                }
-            }
             steps {
                 echo "📦 Installing Node.js dependencies..."
                 sh 'npm install'
@@ -70,13 +64,8 @@ pipeline {
                     sh 'git config --global user.name "Jenkins"'
                     sh 'git config --global user.email "jenkins@devhub.local"'
 
-                    // Infra repo clone
                     sh "git clone https://$GIT_USER:$GIT_TOKEN@github.com/Goonerd17/DevHub-infra.git"
-
-                    // deployment.yml 이미지 태그 업데이트
                     sh "cd DevHub-infra/infra/k8s/devhub-front && sed -i.bak 's#image: goonerd/DevHub-front:.*#image: $IMAGE_NAME:$BUILD_TAG#' deployment.yml"
-
-                    // Git 커밋 및 push
                     sh """
                         cd DevHub-infra/infra/k8s/devhub-front
                         git add .
