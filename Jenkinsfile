@@ -25,15 +25,17 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Install Dependencies & Build Frontend') {
+            agent {
+                docker {
+                    image 'node:18-bullseye'    // Node.js + npm 포함 Docker 이미지
+                    args '-u root:root'         // 권한 문제 방지
+                }
+            }
             steps {
                 echo "📦 Installing Node.js dependencies..."
                 sh 'npm install'
-            }
-        }
 
-        stage('Build Frontend') {
-            steps {
                 echo "🏗 Building frontend with Vite..."
                 sh 'npm run build'
             }
@@ -67,10 +69,20 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
                     sh 'git config --global user.name "Jenkins"'
                     sh 'git config --global user.email "jenkins@devhub.local"'
+
+                    // Infra repo clone
                     sh "git clone https://$GIT_USER:$GIT_TOKEN@github.com/Goonerd17/DevHub-infra.git"
+
+                    // deployment.yml 이미지 태그 업데이트
                     sh "cd DevHub-infra/infra/k8s/devhub-front && sed -i.bak 's#image: goonerd/DevHub-front:.*#image: $IMAGE_NAME:$BUILD_TAG#' deployment.yml"
-                    sh "cd DevHub-infra/infra/k8s/devhub-front && git add . && git commit -m '[CI] Update front image to $BUILD_TAG' || echo 'No changes to commit'"
-                    sh "cd DevHub-infra/infra/k8s/devhub-front && git push origin dev"
+
+                    // Git 커밋 및 push
+                    sh """
+                        cd DevHub-infra/infra/k8s/devhub-front
+                        git add .
+                        git commit -m '[CI] Update front image to $BUILD_TAG' || echo 'No changes to commit'
+                        git push origin dev
+                    """
                 }
             }
         }
