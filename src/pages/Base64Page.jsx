@@ -9,7 +9,7 @@ const Base64 = () => {
   return (
     <PageLayout>
       <div className="tool-container base64-page">
-        <h2 className="tool-title">🔐 Base64 인코더 / 디코더</h2>
+        <h2 className="tool-title">🔐 Base64 Encoder / Decoder</h2>
         <textarea
           placeholder="Enter text..."
           value={input}
