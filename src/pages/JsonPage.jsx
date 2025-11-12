@@ -18,7 +18,7 @@ const Json = () => {
   return (
     <PageLayout>
       <div className="tool-container json-page">
-        <h2 className="tool-title">📄 JSON 포매터</h2>
+        <h2 className="tool-title">📄 JSON Formatter</h2>
         <textarea
           placeholder="Paste your JSON here..."
           value={input}
