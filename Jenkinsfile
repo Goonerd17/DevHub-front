@@ -87,7 +87,7 @@ pipeline {
                             sh """
                                 git add deployment.yml
                                 git commit -m '[CI] Update frontend image to ${BUILD_TAG}' --allow-empty
-                                git push origin ${targetBranch}
+                                git push origin main
                             """
                         }
                     }
