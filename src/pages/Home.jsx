@@ -6,7 +6,7 @@ const HomePage = () => {
   return (
     <PageLayout>
       <div className="tool-container home-page">
-        <h2 className="tool-title">🏠 DevHub Prototype v5</h2>
+        <h2 className="tool-title">🏠 DevHub Prototype v6</h2>
         <p>
           DevHub에 오신 것을 환영합니다.<br />
           다양한 개발 보조 도구를 제공합니다.<br />
