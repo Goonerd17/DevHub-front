@@ -60,7 +60,7 @@ const GuestBookPage = () => {
   return (
     <PageLayout>
       <div className="tool-container guestbook-page">
-        <h2 className="tool-title">📖 Test v5</h2>
+        <h2 className="tool-title">📖 GuestBook</h2>
 
         {error && <p className="error-text">{error}</p>}
 
