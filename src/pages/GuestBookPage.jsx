@@ -10,13 +10,13 @@ const GuestBookPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const API_BASE = "/guestbook"
-
   // 방명록 조회
   const fetchGuestBooks = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${API_BASE}`);
+      const res = await axios.get(`/guestbook`);
+      console.log("data1", res)
+      console.log("data2", res.data)
       if (res.data.success === true) {
         setGuestBooks(res.data.data || []);
       } else {
@@ -36,7 +36,7 @@ const GuestBookPage = () => {
       return;
     }
     try {
-      const res = await axios.post(`${API_BASE}/create`, {
+      const res = await axios.post(`/guestbook/create`, {
         username,
         description,
       });
